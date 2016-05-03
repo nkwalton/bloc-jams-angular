@@ -1,0 +1,2 @@
+// The root module will act as a container for different parts of our application. The first argument passed, blocJams, is the prescribed name of the module. The empty array, passed as the second argument, injects dependencies into an application. 
+angular.module('blocJams', []);
