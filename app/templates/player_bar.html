@@ -3,7 +3,7 @@
          <div class="control-group main-controls">
              <a class="previous">
                  <span class="ion-skip-backward"></span>
-
+             <tr class="play-pause" ng-mouseover="hovered = true" ng-mouseleave="hovered = false">
                  <!--             functionality for when song is playing-->
              <td class="play-pause">
                  <span class="ion-play" ng-show="!playing && hovered"></span>
@@ -17,7 +17,7 @@
                  <a class="song-item-number" ng-show="!playing && !hovered"><span>1</span></a>
                  <a class="album-song-button" ng-show="!playing  && hovered"><span class="ion-play"></span></a>
              </td>
-             
+             </tr>
              <a class="next">
                  <span class="ion-skip-forward"></span>
              </a>
