@@ -10,16 +10,19 @@
          $stateProvider
          .state('landing', {
              url: '/',
+             controller: 'LandingCtrl as landing',
              templateUrl: '/templates/landing.html'
          })
          
          .state('album', {
              url: '/album',
+             controller: 'AlbumCtrl as album',
              templateUrl: '/templates/album.html'
          })
          
          .state('collection', {
              url: '/collection',
+             controller: 'CollectionCtrl as collection',
              templateUrl: '/templates/collection.html'
          });
      }
@@ -29,7 +32,7 @@
          .config(config);
  })();
 
-//$statProvider: to configure the state behavior.
+// $statProvider: to configure the state behavior.
 // $localProvider: to configure how the application handles URLs in the browser.
 
 //To make sure the providers are accessible throughout the application, inject them using the config block on the application's root module. Write a config function to pass into the config() function
