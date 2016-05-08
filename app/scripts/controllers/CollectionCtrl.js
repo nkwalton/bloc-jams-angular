@@ -13,6 +13,6 @@
     angular
         .module('blocJams')
         .controller('CollectionCtrl', CollectionCtrl);
-}) ();
+})();
 
 //here we define a controller for the collection view.  we must call .controller on an Angular module. the .contoller method has two parameters ('CollectionCtrl' is the name of the controller, and the CollectionCtrl is a callback.) 
