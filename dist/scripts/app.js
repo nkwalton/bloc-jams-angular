@@ -26,7 +26,7 @@
              templateUrl: '/templates/collection.html'
          });
      }
- 
+      // this is the root  module. it will act as a container for different parts of our application.  the first argument passed is the perscribed name of our module.  the second argument, injects dependencies into an application.
      angular
          .module('blocJams', ['ui.router'])
          .config(config);

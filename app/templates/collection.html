@@ -1,5 +1,5 @@
 <section class="album-covers container clearfix">
-     <div class="collection-album-container column fourth" ng-repeat="album in collection.albums">
+     <div class="collection-album-container column fourth" ng-repeat="album in collection.albums track by $index">
 <!--        we've bound the album data to the CollectionCtrl, we need to update the Collection template to access the necessary information and display multiple albums. we add the ngRepeat directive (directives bing behavior to HTML elements)  ngRepeat is similar to a for..in statement, where it iterates through a collection.-->
          
          <img src="{{ album.albumArtUrl }}">

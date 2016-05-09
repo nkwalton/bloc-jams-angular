@@ -1,10 +1,13 @@
-// Example Album
- var albumPicasso = {
+ (function() {
+     function Fixtures() {
+         var Fixtures = {};
+         
+var albumPicasso = {
      title: 'The Colors',
      artist: 'Pablo Picasso',
      label: 'Cubism',
      year: '1881',
-     albumArtUrl: 'assets/images/01.png',
+     albumArtUrl: '/assets/images/01.png',
      songs: [
          { title: 'Blue', duration: 161.71, audioUrl: '/assets/music/blue' },
          { title: 'Green', duration: 103.96, audioUrl: '/assets/music/green' },
@@ -20,7 +23,7 @@
      artist: 'Guglielmo Marconi',
      label: 'EM',
      year: '1909',
-     albumArtUrl: 'assets/images/20.png',
+     albumArtUrl: '/assets/images/20.png',
      songs: [
          { title: 'Hello, Operator?', duration: '1:01' },
          { title: 'Ring, ring, ring', duration: '5:01' },
@@ -28,20 +31,20 @@
          { title: 'Can you hear me now?', duration: '3:14' },
          { title: 'Wrong phone number', duration: '2:15'}
      ]
- };
-
-//My Album
-var albumTheOffspring = {
-    title: 'Americana',
-    artist: 'The Offspring',
-    label: 'Comumbia Records',
-    year: '1998',
-    albumArtURL: 'assets/images/americana.jpg',
-    songs: [
-        { title: 'Welcome', duration: '0:10' },
-        { title: 'Have You Ever', duration: '3:57' },
-        { title: 'Staring at the Sun', duration: '2:13' },
-        { title: 'Pretty Fly (For a White Guy)', duration: '3:04' },
-        { title: 'The kids Arent\'t Alright', duration: '3:00' },
-    ]
-};
+ };       
+            //         this is a public, getAlbum method on the service we'll now use to pull the album data into our application.
+         Fixtures.getAlbum = function() {
+            return albumPicasso;
+         };
+             
+         Fixtures.getCollection = function(numberOfAlbums) {
+             return [ numberOfAlbums.albumPicasso ];
+         };
+         
+         return Fixtures;
+     }
+ 
+     angular
+         .module('blocJams')
+         .factory('Fixtures', Fixtures);
+ })();
