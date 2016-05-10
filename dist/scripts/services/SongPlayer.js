@@ -1,33 +1,72 @@
 
  (function() {
      function SongPlayer() {
+         
           var SongPlayer = {};
          
+             /**
+             * @desc currentSong variable (empty); to compare against song or other variables.
+             * @type {0bject}.
+             */
           var currentSong = null;
+             
+             /**
+             * @desc Buzz object audio file.
+             * @type {Object}.
+             */
           var currentBuzzObject = null;
           
-          // below we add a play method to our SongPlayer service we created in the AlbumCtrl.
+            /**
+            * @function setSong.
+            * @desc Stops currently playing song and loads new audio file as currentBuzzObject.
+            * @param {Object} song.
+            */
+          var setSong = function(song) {
+            if (currentBuzzObject) {
+                currentBuzzObject.stop();
+                currentSong.playing = null;
+                }
+
+            currentBuzzObject = new buzz.sound(song.audioUrl, {
+                formats: ['mp3'],
+                preload: true
+            });
+
+            currentSong = song;
+          };
+         
+            // private playSong function.
+            /**
+            @function playSong.
+            @desc plays (song) audio file.
+            @param {object} song.
+            */
+         var playSong = function(song) {
+             currentBuzzObject.play();
+             song.playing = true;
+         };
+         
+          // below we add a public, play method to our SongPlayer service we created in the AlbumCtrl.
+          /**
+          * @function SongPlayer.play
+          * @desc setSong function with (song) parameter, calls (song) on the playSong function.
+          */
           SongPlayer.play = function(song) {
               
              if (currentSong !== song) {
-                 if (currentBuzzObject) {
-                     currentBuzzObject.stop();
-                 
-                 } else if (currentSong === song) {
-                     if (currentBuzzObject.isPaused()) {
-                         currentBuzzObject.play();
-                     }
-                 }       
-              
-                 currentBuzzObject = new buzz.sound(song.audioUrl, {
-                    formats: ['mp3'],
-                    preload: true
-                 });
-                 
-                 currentSong = Song;
- 
-                 currentBuzzObject.play();
+                 setSong(song);
+                 playSong(song);
              }
+          };
+         
+         // the public,pause method, implemented when a user clicks pause button.
+         /**
+         * @function SongPlayer.pause
+         * @desc pause audio file, update playing status --> false.
+         */
+          SongPlayer.pause = function(song) {
+            currentBuzzObject.pause();
+            song.playing = false;
           };
          
           return SongPlayer;
