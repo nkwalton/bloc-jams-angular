@@ -57,13 +57,25 @@
             // private playSong function.
             /**
             @function playSong.
-            @desc plays (song) audio file.
+            @desc plays (song) audio file. Updates the playing status of song to true.
             @param {object} song.
             */
          var playSong = function(song) {
              currentBuzzObject.play();
              song.playing = true;
          };
+         
+         
+             // private stopSong function.
+             /**
+             @function stopSong.
+             @desc stops (song) audio file.  Upates the playing status of the song to false.
+             @param {object} song.
+             */
+          var stopSong = function(song) {
+             currentBuzzObject.stop();
+             song.playing = null;
+          };
          
           // below we add a public, play method to our SongPlayer service we created in the AlbumCtrl.
           /**
@@ -100,8 +112,27 @@
              currentSongIndex--;
               
               if (currentSongIndex < 0) {
-                 currentBuzzObject.stop();
-                 SongPlayer.currentSong.playing = null;
+                 stopSong(song);
+              } else {
+                 var song = currentAlbum.songs[currentSongIndex];
+                 setSong(song);
+                 playSong(song);
+              }
+          };
+         
+          // (public) next method.
+          /**
+          * @function  next
+          * @desc  uses the getSongIndex function to get index of currently playing song and increases      that index by one. The first conditional states: if the currently playing song is greater      than or equal to the last song, and user hits next button -  then, song stops, sets value      of currently playing song to first song. the second conditional (else) assumes index > 0,      and currentSongIndex++ (goes forward one song index), sets that song, plays song.
+          * @param  SongPlayer.currentSong  {object}. 
+          */
+          SongPlayer.next = function() {
+             var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+             currentSongIndex++;
+              
+              if (currentSongIndex >= currentAlbum.songs.length) {
+                 stopSong(song);
+                 SongPlayer.currentSong = currentSongIndex 0;
               } else {
                  var song = currentAlbum.songs[currentSongIndex];
                  setSong(song);
