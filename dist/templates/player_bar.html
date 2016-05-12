@@ -1,7 +1,7 @@
-<section class="player-bar">
+<section class="player-bar" ng-controller="PlayerBarCtrl as playerBar">
      <div class="container">
          <div class="control-group main-controls">
-             <a class="previous">
+              <a class="previous" ng-click="playerBar.songPlayer.previous()">
                  <span class="ion-skip-backward"></span>
              <tr class="play-pause" ng-mouseover="hovered = true" ng-mouseleave="hovered = false">
                  <!--             functionality for when song is playing-->
@@ -14,8 +14,15 @@
                  <!--             functionality for when song is paused-->
              <td class="play-pause">
                  <span class="ion-pause" ng-show="playing"></span>
-                 <a class="song-item-number" ng-show="!playing && !hovered"><span>1</span></a>
-                 <a class="album-song-button" ng-show="!playing  && hovered"><span class="ion-play"></span></a>
+                     <a class="song-item-number" ng-show="!playing && !hovered"><span>1</span></a>
+                     <a class="album-song-button" ng-show="!playing  && hovered"> <span class='ion-play'
+                     ng-show="!playerBar.songPlayer.currentSong.playing"
+                     ng-click="playerBar.songPlayer.play()">
+                 </span>
+                 <span class='ion-pause'
+                       ng-show="playerBar.songPlayer.currentSong.playing"
+                       ng-click="playerBar.songPlayer.pause()">
+                 </span></a>
              </td>
              </tr>
              <a class="next">
@@ -23,24 +30,21 @@
              </a>
          </div>
          <div class="control-group currently-playing">
-             <h2 class="song-name"></h2>
+             <h2 class="song-name">{{playerBar.songPlayer.currentSong.playing.title}}</h2>
              <h2 class="artist-song-mobile"></h2>
-             <h3 class="artist-name"></h3>
+             <h3 class="artist-name">{{playerBar.songPlayer.currentSong.playing.artist}}</h3>
              <div class="seek-control">
                  <div class="seek-bar">
                      <div class="fill"></div>
                      <div class="thumb"></div>
                  </div>
                  <div class="current-time"></div>
-                 <div class="total-time"></div>
+                 <div class="total-time">{{playerBar.songPlayer.currentSong.playing.duration}}</div>
              </div>
          </div>
          <div class="control-group volume">
              <span class="icon ion-volume-high"></span>
-             <div class="seek-bar">
-                 <div class="fill"></div>
-                 <div class="thumb"></div>
-             </div>
+             <seek-bar></seek-bar>
          </div>
      </div>
  </section>

@@ -1,0 +1,12 @@
+<!-- Despite using jQuery, Angular still dictates the style of our code – we declare in the HTML which element should execute scope.onClickSeekBar().  When a user clicks on a point on the seek-bar class element, the function will execute -->
+
+<!-- event (passed in from the view as $event) occurred -->
+
+<div class="seek-bar" ng-click="onClickSeekBar($event)">
+     <div class="fill" ng-style="fillStyle()"></div>
+     <div class="thumb" ng-mousedown="trackThumb()"></div>
+ </div>
+
+<!--ngStyle directive allows us to set CSS styles on an HTML element conditionally-->
+
+<!-- The scope.trackThumb function should execute when a user interacts with the thumb class element in the view. More specifically, when the event is a mousedown event. Add an ngMousedown directive, which allows us to specify custom behavior on a mousedown event, to trigger the scope.trackThumb function -->
