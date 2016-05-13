@@ -5,7 +5,7 @@
          
             /**
             * @function calculatePercentage (private).
-            * @desc Calculates the horizontal percent along the seek bar where the event (passed in from         the view as $event) occurred.
+            * @desc Calculates the horizontal percent along the seek bar where the event (passed in from the view as $event) occurred.
             * @param seekBar {object}, event {object}.
             * @returns {number}
             */
@@ -29,14 +29,14 @@
                 scope.max = 100;
              
              /**
-             * @desc Holds the element that matches the directive (<seek-bar>) as a jQuery object so we   can call jQuery methods on it.
+             * @desc Holds the element that matches the directive (<seek-bar>) as a jQuery object so we can call jQuery methods on it.
              * @type {object}.
              */
              var seekBar = $(element);
  
                 /**
                 * @function percentString (private).
-                * @desc function that calculates a percent based on the value and maximum value of a        seek bar.
+                * @desc function that calculates a percent based on the value and maximum value of a seek bar.
                 * @returns {number}
                 */      
              var percentString = function () {
@@ -55,9 +55,17 @@
                  return {width: percentString()};
              };
                 
+                 /**
+                * @function thumbStyle (public method).
+                * @desc method that updates the position of the seek bar thumb.
+                */  
+             scope.thumbStyle = function() {
+                 return {thumb.onClickSeekBar(event)}
+             };     
+                 
                 /**
                 * @function onClickSeekBar (public method).
-                * @desc method that updates the seek bar value based on the seek bar's width and the        location of the user's click on the seek bar.
+                * @desc method that updates the seek bar value based on the seek bar's width and the location of the user's click on the seek bar.
                 * @param event {object}.
                 */  
              scope.onClickSeekBar = function(event) {
@@ -67,7 +75,7 @@
                 
                 /**
                 * @function trackThumb (public method).
-                * @desc method that uses $apply to constantly apply the change in value of scope.value      as the user drags the seek bar thumb.
+                * @desc method that uses $apply to constantly apply the change in value of scope.value as the user drags the seek bar thumb.
                 */  
              scope.trackThumb = function() {
                  $document.bind('mousemove.thumb', function(event) {
