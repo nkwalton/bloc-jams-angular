@@ -23,7 +23,9 @@
              templateUrl: '/templates/directives/seek_bar.html',
              replace: true,
              restrict: 'E',
-             scope: { },
+             scope: { 
+                onChange: '&'
+             },
              link: function(scope, element, attributes) {
                 scope.value = 0;
                 scope.max = 100;
@@ -33,6 +35,15 @@
              * @type {object}.
              */
              var seekBar = $(element);
+                 
+             //to monitor the value changes of these attributes in a manner specific to this directive, we will use the $observe method.      
+             attributes.$observe('value', function(newValue) {
+                scope.value = newValue;
+             });
+ 
+             attributes.$observe('max', function(newValue) {
+                scope.max = newValue;
+             });
  
                 /**
                 * @function percentString (private).
@@ -71,6 +82,7 @@
              scope.onClickSeekBar = function(event) {
                  var percent = calculatePercent(seekBar, event);
                  scope.value = percent * scope.max;
+                 notifyOnChange(scope.value);
              };
                 
                 /**
@@ -82,6 +94,7 @@
                      var percent = calculatePercent(seekBar, event);
                      scope.$apply(function() {
                          scope.value = percent * scope.max;
+                         notifyOnChange(scope.value);
                      });
                  });
 
@@ -89,6 +102,17 @@
                      $document.unbind('mousemove.thumb');
                      $document.unbind('mouseup.thumb');
                  });
+                 
+                 
+                 /**
+                * @function notifyOnChange (private function).
+                * @desc check to see if scope.onChange is a function. scope.onChange() calls the function in the attribute. angular will insert the local newValue variable as the value argument we pass into the SongPlayer.setCurrentTime() function called in the view.
+                */  
+                 var notifyOnChange = function(newValue) {
+                     if (typeof scope.onChange === 'function') {
+                         scope.onChange({value: newValue});
+                     }
+                 };
              };
              }
          };

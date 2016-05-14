@@ -1,6 +1,6 @@
 
  (function() {
-     function SongPlayer(Fixtures) {
+     function SongPlayer($rootScope, Fixtures) {
          
           var SongPlayer = {};
            
@@ -32,27 +32,42 @@
                 formats: ['mp3'],
                 preload: true
             });
-
+            
+            /**
+            * @desc $rootScope.$apply will get the song's playback progress from anywhere. the $apply to the SongPlayer.setsong method so it starts "applying" the time update once we know which song to play. the bind() method adds an event listener to the Buzz sound object-listening for the timeupdate event.
+            */  
+            currentBuzzObject.bind('timeupdate', function() {
+                $rootScope.$apply(function() {
+                    SongPlayer.currentTime = currentBuzzObject.getTime();
+                });
+            });  
+              
             SongPlayer.currentSong = song;
           };
          
-           // private getSongIndex function.
-           /**
-           * @function getSongIndex
-           * @desc  now that we have access to currentAlbum, (via fixtures service), use this function to      get the index of a song.
-           * @param  song {object}.
-           * @returns song index, {number}.
-           */
+            // private getSongIndex function.
+            /**
+            * @function getSongIndex
+            * @desc  now that we have access to currentAlbum, (via fixtures service), use this function to get the index of a song.
+            * @param  song {object}.
+            * @returns song index, {number}.
+            */
           var getSongIndex = function(song) {
                 return currentAlbum.songs.indexOf(song);  
           };
          
-          //removed old (private), currentSong variable; replaced with public currentSong attribute.
-          /**
-             * @desc currentSong variable (empty); to compare against song or other variables.
-             * @type {0bject}.
-             */
+            //removed old (private), currentSong variable; replaced with public currentSong attribute.
+            /**
+            * @desc currentSong variable (empty); to compare against song or other variables.
+            * @type {0bject}.
+            */
           SongPlayer.currentSong = null;
+         
+            /**
+            * @desc Current playback time (in seconds) of currently playing song
+            * @type {Number}
+            */
+          SongPlayer.currentTime = null;
          
             // private playSong function.
             /**
@@ -60,10 +75,10 @@
             @desc plays (song) audio file. Updates the playing status of song to true.
             @param {object} song.
             */
-         var playSong = function(song) {
-             currentBuzzObject.play();
-             song.playing = true;
-         };
+          var playSong = function(song) {
+              currentBuzzObject.play();
+              song.playing = true;
+          };
          
          
              // private stopSong function.
@@ -77,11 +92,11 @@
              song.playing = null;
           };
          
-          // below we add a public, play method to our SongPlayer service we created in the AlbumCtrl.
-          /**
-          * @function SongPlayer.play
-          * @desc setSong function with (song) parameter, calls (song) on the playSong function.
-          */
+             // below we add a public, play method to our SongPlayer service we created in the AlbumCtrl.
+             /**
+             * @function SongPlayer.play
+             * @desc setSong function with (song) parameter, calls (song) on the playSong function.
+             */
           SongPlayer.play = function(song) {
              song = song || SongPlayer.currentSong;
              if (SongPlayer.currentSong !== song) {
@@ -90,23 +105,23 @@
              }
           };
          
-         // the public,pause method, implemented when a user clicks pause button.
-         /**
-         * @function SongPlayer.pause
-         * @desc pause audio file, update playing status --> false.
-         */
+             // the public,pause method, implemented when a user clicks pause button.
+             /**
+             * @function SongPlayer.pause
+             * @desc pause audio file, update playing status --> false.
+             */
           SongPlayer.pause = function(song) {
             song = song || SongPlayer.currentSong;
             currentBuzzObject.pause();
             song.playing = false;
           };
          
-           // (public) previous method.
-          /**
-          * @function  previous
-          * @desc  uses the getSongIndex function to get index of currently playing song and decreases that          index by one. The first conditional statement is for if the currently playing song is the          first song, and user hits previous button -  then, song stops, sets value of currently            playing song to first song. the second conditional (else) assumes index > 0, and                  currentSongIndex-- (goes back one song index), sets that song, plays song.
-          * @param  SongPlayer.currentSong  {object}. 
-          */
+             // (public) previous method.
+             /**
+             * @function  previous
+             * @desc  uses the getSongIndex function to get index of currently playing song and decreases that index by one. The first conditional statement is for if the currently playing song is the first song, and user hits previous button -  then, song stops, sets value of currently playing song to first song. the second conditional (else) assumes index > 0, and currentSongIndex-- (goes back one song index), sets that song, plays song.
+             * @param  SongPlayer.currentSong  {object}. 
+             */
           SongPlayer.previous = function() {
              var currentSongIndex = getSongIndex(SongPlayer.currentSong);
              currentSongIndex--;
@@ -120,12 +135,12 @@
               }
           };
          
-          // (public) next method.
-          /**
-          * @function  next
-          * @desc  uses the getSongIndex function to get index of currently playing song and increases      that index by one. The first conditional states: if the currently playing song is greater      than or equal to the last song, and user hits next button -  then, song stops, sets value      of currently playing song to first song. the second conditional (else) assumes index > 0,      and currentSongIndex++ (goes forward one song index), sets that song, plays song.
-          * @param  SongPlayer.currentSong  {object}. 
-          */
+             // (public) next method.
+             /**
+             * @function  next
+             * @desc  uses the getSongIndex function to get index of currently playing song and increases that index by one. The first conditional states: if the currently playing song is greater than or equal to the last song, and user hits next button -  then, song stops, sets value of currently playing song to first song. the second conditional (else) assumes index > 0, and currentSongIndex++ (goes forward one song index), sets that song, plays song.
+             * @param  SongPlayer.currentSong  {object}. 
+             */
           SongPlayer.next = function() {
              var currentSongIndex = getSongIndex(SongPlayer.currentSong);
              currentSongIndex++;
@@ -140,13 +155,24 @@
               }
           };
          
+            /** (public) setCurrentTime method.
+            * @function setCurrentTime
+            * @desc Set current time (in seconds) of currently playing song
+            * @param {Number} time
+            */
+          SongPlayer.setCurrentTime = function(time) {
+              if (currentBuzzObject) {
+                  currentBuzzObject.setTime(time);
+              }
+          };
+         
          
           return SongPlayer;
      }
  
      angular
          .module('blocJams')
-         .factory('SongPlayer', SongPlayer);
+         .factory('SongPlayer', ['$rootScope', 'Fixtures', SongPlayer]);
  })();
 
 //Like the Fixtures service, within the SongPlayer service we create a variable and set it to an empty object. The service returns this object, making its properties and methods public to the rest of the application.
